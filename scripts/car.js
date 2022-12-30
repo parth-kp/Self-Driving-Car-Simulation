@@ -7,7 +7,7 @@ class Car{
         
         this.speed=0;
         this.acceleration=0.2;
-        this.maxSpeed=3;
+        this.maxSpeed=4;
         this.friction=0.05;
         this.angle=0;
 
@@ -47,6 +47,7 @@ class Car{
                 this.angle+=0.03*flip;
             }
         }
+       // if(this.x==0||this.y==0) this.speed=0;
         this.x-=Math.sin(this.angle)*this.speed;
         this.y-=Math.cos(this.angle)*this.speed;
     }
@@ -57,12 +58,20 @@ class Car{
         ctx.rotate(-this.angle);
 
         ctx.beginPath();
-        ctx.rect(
+        // ctx.rect(
+        //     -this.width/2,
+        //     -this.height/2,
+        //     this.width,
+        //     this.height
+        // );
+        const image = document.getElementById("source");
+        ctx.drawImage(
+            image,
             -this.width/2,
             -this.height/2,
             this.width,
             this.height
         );
-        ctx.fill();
+        //ctx.fill();
     }
 }

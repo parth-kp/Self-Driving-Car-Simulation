@@ -4,8 +4,7 @@ canvas.width=450;
 
 const ctx=canvas.getContext("2d"); //Canvas.Context for puting up car in canvas
 
-const car = new Car(100,100,30,50);
-car.draw(ctx);
+const car = new Car(225,100,30,50);
 
 animate();
 

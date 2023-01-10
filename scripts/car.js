@@ -12,10 +12,16 @@ class Car{
         this.angle=0;
         this.damaged=false;
 
+        this.useBrain=controlType=="AI";
+
         this.controls = new Controls(controlType);
 
-        if(controlType!="DUMMY")
+        if(controlType!="DUMMY"){
             this.sensor = new Sensor(this,5);
+            this.brain = new NeuralNetwork(
+                [this.sensor.rayCount,6,4],
+            );
+        }
     }
 
     update(roadBorders,traffic){
@@ -24,8 +30,22 @@ class Car{
             this.polygon=this.#createPolygon();
             this.damaged=this.#assessDamage(roadBorders,traffic);
         }
-        if(this.sensor)
+        if(this.sensor){
             this.sensor.update(roadBorders,traffic);
+            const offsets=this.sensor.readings.map(
+                s=>s==null?0:(1-s.offset)
+            );
+            const outputs = NeuralNetwork.feedForward(offsets,this.brain);
+            
+            if(this.useBrain){
+                this.controls.forward=outputs[0];
+                this.controls.left=outputs[1];
+                this.controls.right=outputs[2];
+                this.controls.reverse=outputs[3];
+            }
+
+            console.log(outputs);
+        }
     }
 
     #assessDamage(roadBorders,traffic){
@@ -109,13 +129,21 @@ class Car{
     }
     
     draw(ctx){
-
+        if(this.damaged){
+            ctx.globalAlpha = 0.5;
+        }
+        else{
+            ctx.globalAlpha =1;
+        }
+       
         switch(this.controlType){
             case "KEYS":
+                this.sensor.draw(ctx);
                 ctx.save();
                 ctx.translate(this.x,this.y);
                 ctx.rotate(-this.angle);
                 ctx.beginPath();
+                
                 const image1 = document.getElementById("bugatti");
                 ctx.drawImage(
                     image1,
@@ -125,17 +153,34 @@ class Car{
                     this.height
                 );
                 ctx.restore();
-                this.sensor.draw(ctx);
                 break;
             
+            case "AI":
+                this.sensor.draw(ctx);
+                ctx.save();
+                ctx.translate(this.x,this.y);
+                ctx.rotate(-this.angle);
+                ctx.beginPath();
+                
+                const image2 = document.getElementById("bugatti");
+                ctx.drawImage(
+                    image2,
+                    -this.width/2,
+                    -this.height/2,
+                    this.width,
+                    this.height
+                );
+                ctx.restore();
+                break;
+
             case "DUMMY":
                 ctx.save();
                 ctx.translate(this.x,this.y);
                 //ctx.rotate(-this.angle);
                 ctx.beginPath();
-                const image2 = document.getElementById("car1");
+                const image3 = document.getElementById("car1");
                 ctx.drawImage(
-                    image2,
+                    image3,
                     -this.width/2,
                     -this.height/2,
                     this.width,

@@ -43,8 +43,6 @@ class Car{
                 this.controls.right=outputs[2];
                 this.controls.reverse=outputs[3];
             }
-
-            console.log(outputs);
         }
     }
 
@@ -128,23 +126,16 @@ class Car{
         //console.table(this.speed);
     }
     
-    draw(ctx){
-        if(this.damaged){
-            ctx.globalAlpha = 0.5;
-        }
-        else{
-            ctx.globalAlpha =1;
-        }
-       
+    draw(ctx,drawSensor=false){
         switch(this.controlType){
             case "KEYS":
-                this.sensor.draw(ctx);
+                if(drawSensor)
+                    this.sensor.draw(ctx);
                 ctx.save();
+                const image1 = this.damaged?document.getElementById("bugattiDamaged"):document.getElementById("bugatti");
                 ctx.translate(this.x,this.y);
                 ctx.rotate(-this.angle);
                 ctx.beginPath();
-                
-                const image1 = document.getElementById("bugatti");
                 ctx.drawImage(
                     image1,
                     -this.width/2,
@@ -156,13 +147,13 @@ class Car{
                 break;
             
             case "AI":
-                this.sensor.draw(ctx);
+                if(drawSensor)
+                    this.sensor.draw(ctx);
                 ctx.save();
                 ctx.translate(this.x,this.y);
                 ctx.rotate(-this.angle);
                 ctx.beginPath();
-                
-                const image2 = document.getElementById("bugatti");
+                const image2 = this.damaged?document.getElementById("bugattiDamaged"):document.getElementById("bugatti");
                 ctx.drawImage(
                     image2,
                     -this.width/2,

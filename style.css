@@ -2,9 +2,35 @@ body{
     margin: 0%;
     background: #181818;
     overflow: hidden;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-#myCanvas{
+#buttons{
+    display: flex;
+    flex-direction: column;
+    padding: 0px 50px 0px 15px;
+}
+
+button{
+    border: none;
+    border-radius: 5px;
+    padding: 5px 5px 7px 5px;
+    margin: 2px;
+    cursor: pointer;
+    font-size: 35px;
+    background: #5d7d5f;
+}
+
+button:hover{
+    background: #719a74;
+}
+
+#carCanvas{
     background-color: #383838;
+}
+
+#networkCanvas{
+    background-color: #85929E;
 }

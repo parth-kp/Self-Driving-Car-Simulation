@@ -1,10 +1,10 @@
 body{
     margin: 0%;
-    background: lightgray;
+    background: #181818;
     overflow: hidden;
     text-align: center;
 }
 
 #myCanvas{
-    background-color: #282828;
+    background-color: #383838;
 }

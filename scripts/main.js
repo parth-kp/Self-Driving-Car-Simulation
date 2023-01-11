@@ -1,6 +1,8 @@
 const carCanvas = document.getElementById("carCanvas"); //Getting Car Canvas
 carCanvas.width=300;
 
+const controlType = prompt("Enter Y: Let AI drive Car\nEnter N: Let You drive Car", 'Y')
+
 const networkCanvas = document.getElementById("networkCanvas");
 networkCanvas.width=500;
 
@@ -9,7 +11,9 @@ const networkCtx=networkCanvas.getContext("2d");
 
 const road = new Road(carCanvas.width/2,carCanvas.width);
 
-const N=prompt("Please Enter Number of Test Car\n( \'1\' for the best car)", 100);
+let N=1;
+if(controlType=='y'||controlType=='Y')
+    N=prompt("Please Enter Number of Test Car\n( \'1\' for the best car)", 100);
 const cars = generateCars(N);
 let bestCar=cars[0];
 
@@ -51,7 +55,11 @@ function discard(){
 function generateCars(N){
     const cars=[];
     for (let i = 0; i < N; i++) {
-        cars.push(new Car(road.getLaneCenter(1),100,45,75,"AI"));
+        if(controlType=='y'||controlType=='Y')
+            cars.push(new Car(road.getLaneCenter(1),100,45,75,"AI"));
+        else{
+            cars.push(new Car(road.getLaneCenter(1),100,45,75,"KEYS"));
+        }
     }
     return cars;
 }
@@ -69,7 +77,7 @@ function animate(){
     );
 
     carCanvas.height=window.innerHeight;
-    networkCanvas.height=window.innerHeight-200;
+    networkCanvas.height=window.innerHeight;
 
     carCtx.save();
     carCtx.translate(0,-bestCar.y+carCanvas.height*0.7)

@@ -1,19 +1,23 @@
 const carCanvas = document.getElementById("carCanvas"); //Getting Car Canvas
 carCanvas.width=300;
 
-const controlType = prompt("Enter Y: Let AI drive Car\nEnter N: Let You drive Car", 'Y')
-
 const networkCanvas = document.getElementById("networkCanvas");
 networkCanvas.width=500;
+
+carCanvas.height=window.innerHeight;
+networkCanvas.height=window.innerHeight;
 
 const carCtx=carCanvas.getContext("2d"); //Canvas.Context for puting up car in carCanvas
 const networkCtx=networkCanvas.getContext("2d");
 
 const road = new Road(carCanvas.width/2,carCanvas.width);
+road.draw(carCtx);
 
+const controlType = prompt("Enter Y: Let AI drive Car\nEnter N: Let You drive Car", 'Y')
 let N=1;
 if(controlType=='y'||controlType=='Y')
     N=prompt("Please Enter Number of Test Car\n( \'1\' for the best car)", 500);
+
 const cars = generateCars(N);
 let bestCar=cars[0];
 
